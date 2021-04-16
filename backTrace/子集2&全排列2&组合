@@ -1,0 +1,84 @@
+//有重复的数字，都要先sort再判断nums[i-1]==nums[i]
+//组合问题用for(int i=start;),排列问题用for(int i=0)结合used判断
+
+
+//子集2
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        res.push_back({});
+        vector<int> tmp;
+        sort(nums.begin(),nums.end());
+        backTrace(nums,tmp,0);
+        return res;
+    }
+
+    void backTrace(vector<int>& nums, vector<int>& tmp, int start){
+        for(int i=start;i<nums.size();++i){
+            if(i>=start+1&&nums[i-1]==nums[i])
+                continue;
+            tmp.push_back(nums[i]);
+            res.push_back(tmp);
+            backTrace(nums,tmp,i+1);
+            tmp.pop_back();
+        }
+    }
+};
+
+
+
+//全排列2
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> permuteUnique(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+        vector<int> tmp;
+        vector<int> used(nums.size(),0);
+        backTrace(nums,tmp,used);
+        return res;
+    }
+
+    void backTrace(vector<int>& nums,vector<int>& tmp,vector<int>& used){
+        if(tmp.size()==nums.size()){
+            res.push_back(tmp);
+            return ;
+        }
+        for(int i=0;i<nums.size();++i){
+            if(used[i]||i>=1&&nums[i-1]==nums[i]&&!used[i-1])
+                continue;
+            tmp.push_back(nums[i]);
+            used[i]=1;
+            backTrace(nums,tmp,used);
+            tmp.pop_back();
+            used[i]=0;
+
+        }
+    }
+};
+
+//组合
+class Solution {
+private:
+    vector<vector<int>> res;
+public:
+    vector<vector<int>> combine(int n, int k) {
+        vector<int> tmp;
+        backTrace(n,k,tmp,1);
+        return res;
+    }
+    void backTrace(int &n,int &k,vector<int> &tmp,int start){
+        if(tmp.size()==k){
+            res.push_back(tmp);
+            return;
+        }
+        for(int i=start;i<=n;++i){
+            tmp.push_back(i);
+            backTrace(n,k,tmp,i+1);
+            tmp.pop_back();
+        }
+    }
+};
