@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        int left=0,right=height.size()-1;
+        int res=0;
+        while(left<right){
+            
+            res=max(res,min(height[left],height[right])*(right-left));
+            //这里会容易想到拿height[left]与height[left+1],height[right]与height[right-1]对比,但选择太多不能控制变量
+            if(height[left]<height[right]) 
+                ++left;
+            else
+                --right;
+        }
+
+        return res;
+
+    }
+};
